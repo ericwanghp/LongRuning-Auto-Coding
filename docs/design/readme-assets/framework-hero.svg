@@ -1,0 +1,134 @@
+<svg width="1400" height="820" viewBox="0 0 1400 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hero-bg" x1="210" y1="40" x2="1180" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5EEDF"/>
+      <stop offset="1" stop-color="#F8F4EC"/>
+    </linearGradient>
+    <linearGradient id="hero-accent" x1="822" y1="136" x2="1233" y2="610" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1D4ED8" stop-opacity="0.18"/>
+      <stop offset="0.52" stop-color="#0F766E" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#D97706" stop-opacity="0.2"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1400" height="820" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="20" stdDeviation="28" flood-color="#0F172A" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="820" rx="36" fill="url(#hero-bg)"/>
+  <circle cx="1135" cy="155" r="210" fill="url(#hero-accent)"/>
+  <circle cx="110" cy="110" r="120" fill="#1D4ED8" fill-opacity="0.06"/>
+  <circle cx="1298" cy="735" r="160" fill="#D97706" fill-opacity="0.08"/>
+
+  <g filter="url(#shadow)">
+    <rect x="58" y="48" width="1284" height="724" rx="32" fill="#FFFDF8" stroke="#E6DED0"/>
+  </g>
+
+  <text x="110" y="138" fill="#0F172A" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="700">
+    Auto-Coding Framework
+  </text>
+  <text x="111" y="188" fill="#1F2937" font-family="Arial, Helvetica, sans-serif" font-size="24">
+    The operating model for long-running AI software delivery.
+  </text>
+  <text x="111" y="236" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="21">
+    <tspan x="111" dy="0">37 specialists, explicit rules, durable project memory,</tspan>
+    <tspan x="111" dy="28">and a workflow that survives interruptions.</tspan>
+  </text>
+
+  <rect x="110" y="286" width="264" height="112" rx="24" fill="#0F172A"/>
+  <text x="142" y="333" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">
+    37 specialist agents
+  </text>
+  <text x="142" y="365" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="17">
+    Development, data, infra,
+  </text>
+  <text x="142" y="390" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="17">
+    quality, product, docs, research.
+  </text>
+
+  <rect x="392" y="286" width="264" height="112" rx="24" fill="#F8F3E6" stroke="#E2D5BF"/>
+  <text x="424" y="333" fill="#7C2D12" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">
+    Dual-track memory
+  </text>
+  <text x="424" y="365" fill="#8A5B35" font-family="Arial, Helvetica, sans-serif" font-size="17">
+    Agent Teams for live work.
+  </text>
+  <text x="424" y="388" fill="#8A5B35" font-family="Arial, Helvetica, sans-serif" font-size="16">
+    <tspan x="424" dy="0">tasks.json and progress.txt</tspan>
+    <tspan x="424" dy="22">for durable state.</tspan>
+  </text>
+
+  <rect x="110" y="422" width="546" height="198" rx="28" fill="#F8FAFC" stroke="#D7E2EE"/>
+  <text x="142" y="468" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">
+    What the framework fixes
+  </text>
+  <text x="142" y="510" fill="#334155" font-family="Arial, Helvetica, sans-serif" font-size="18">
+    One-shot prompting breaks when:
+  </text>
+  <circle cx="148" cy="543" r="5" fill="#D97706"/>
+  <text x="166" y="549" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="18">
+    Sessions end and context disappears
+  </text>
+  <circle cx="148" cy="581" r="5" fill="#D97706"/>
+  <text x="166" y="587" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="17">
+    Parallel work has no coordinator or audit trail
+  </text>
+  <circle cx="148" cy="619" r="5" fill="#D97706"/>
+  <text x="166" y="625" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="18">
+    Long delivery cycles drift away from requirements
+  </text>
+
+  <rect x="742" y="182" width="504" height="420" rx="30" fill="#FCFBF7" stroke="#E7E1D5"/>
+  <text x="776" y="232" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">
+    Delivery engine
+  </text>
+
+  <rect x="786" y="274" width="154" height="74" rx="22" fill="#FEF3C7" stroke="#F59E0B"/>
+  <text x="817" y="319" fill="#92400E" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
+    Prompt
+  </text>
+
+  <rect x="1048" y="274" width="154" height="74" rx="22" fill="#DBEAFE" stroke="#2563EB"/>
+  <text x="1071" y="319" fill="#1D4ED8" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
+    Team Lead
+  </text>
+
+  <rect x="786" y="390" width="154" height="74" rx="22" fill="#E7F7F2" stroke="#0F766E"/>
+  <text x="807" y="435" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
+    Specialists
+  </text>
+
+  <rect x="1048" y="390" width="154" height="74" rx="22" fill="#F4E8FF" stroke="#7C3AED"/>
+  <text x="1086" y="435" fill="#6D28D9" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
+    Rules
+  </text>
+
+  <rect x="786" y="506" width="154" height="74" rx="22" fill="#FFF7ED" stroke="#EA580C"/>
+  <text x="809" y="551" fill="#C2410C" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">
+    tasks.json
+  </text>
+
+  <rect x="1048" y="506" width="154" height="74" rx="22" fill="#F8FAFC" stroke="#64748B"/>
+  <text x="1076" y="543" fill="#334155" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="700">
+    progress.txt
+  </text>
+  <text x="1096" y="564" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="15">
+    docs + git
+  </text>
+
+  <path d="M940 311H1048" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1125 348V390" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M863 348V390" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M940 427H1048" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M863 464V506" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M1125 464V506" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M940 543H1048" stroke="#94A3B8" stroke-width="4" stroke-linecap="round"/>
+
+  <rect x="110" y="650" width="1136" height="80" rx="22" fill="#0F172A"/>
+  <text x="146" y="686" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">
+    <tspan x="146" dy="0">Build with AI like a team,</tspan>
+    <tspan x="146" dy="28">not like a chat transcript.</tspan>
+  </text>
+  <text x="882" y="699" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="18">
+    Recoverable. Parallel. Reviewable. Git-backed.
+  </text>
+</svg>

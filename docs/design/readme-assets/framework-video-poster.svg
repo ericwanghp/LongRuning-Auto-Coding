@@ -1,0 +1,40 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="poster-bg" x1="202" y1="40" x2="1368" y2="826" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5EEDF"/>
+      <stop offset="1" stop-color="#F3F7FC"/>
+    </linearGradient>
+    <radialGradient id="poster-radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1212 164) rotate(136.587) scale(422.356 313.993)">
+      <stop stop-color="#1D4ED8" stop-opacity="0.2"/>
+      <stop offset="0.55" stop-color="#0F766E" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#D97706" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" rx="40" fill="url(#poster-bg)"/>
+  <circle cx="1212" cy="164" r="286" fill="url(#poster-radial)"/>
+  <rect x="82" y="68" width="1436" height="764" rx="36" fill="#FFFDF8" stroke="#E6DED0"/>
+
+  <text x="142" y="180" fill="#0F172A" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">
+    Auto-Coding Framework
+  </text>
+  <text x="145" y="244" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="34">
+    Watch the 60-second walkthrough
+  </text>
+  <text x="145" y="292" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="24">
+    <tspan x="145" dy="0">Architecture, workflow, and the advantages</tspan>
+    <tspan x="145" dy="30">over ad-hoc prompting.</tspan>
+  </text>
+
+  <rect x="144" y="364" width="1312" height="338" rx="30" fill="#0F172A"/>
+  <circle cx="800" cy="533" r="88" fill="#F8FAFC" fill-opacity="0.16" stroke="#CBD5E1"/>
+  <polygon points="780,484 780,582 860,533" fill="#F8FAFC"/>
+
+  <text x="180" y="758" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">
+    Includes:
+  </text>
+  <text x="292" y="744" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="24">
+    <tspan x="292" dy="0">dual-track memory, 8-phase delivery,</tspan>
+    <tspan x="292" dy="28">role-based execution, and git-backed traceability</tspan>
+  </text>
+</svg>

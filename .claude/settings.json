@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node .claude/scripts/policy-check.js:*)",
+      "Bash(node .claude/scripts/audit-toolchain-deps.js:*)"
+    ]
+  }
+}

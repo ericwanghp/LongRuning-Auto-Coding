@@ -1,0 +1,33 @@
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+.next/
+dist/
+build/
+
+# Session data
+.sessions.json
+
+# macOS system files
+.DS_Store
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Claude Code local settings
+.claude/settings.local.json
+.claude/settings.json
+.claude/*.local.*
+
+
+# Excalidraw architecture diagrams
+CLAUDE-architecture.excalidraw
+
+.agents/
+.test/

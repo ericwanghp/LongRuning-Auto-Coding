@@ -1,0 +1,244 @@
+{
+  "version": "2.0",
+  "description": "Auto-Coding Framework skill dependencies with superpowers integration",
+  "skills": {
+    "required": [
+      {
+        "name": "commit",
+        "source": "built-in",
+        "description": "Structured Git commits with feature ID tracking",
+        "usage": "After each feature completion"
+      }
+    ],
+    "workflowSkills": {
+      "brainstorming": {
+        "source": ".claude/skills/brainstorming/SKILL.md",
+        "phases": ["1", "2"],
+        "description": "Explore requirements, create BRD/PRD",
+        "triggers": ["new feature request", "build", "create", "design"]
+      },
+      "competitive-analysis": {
+        "source": ".claude/skills/competitive-analysis/SKILL.md",
+        "phases": ["1"],
+        "description": "Research competitor products and extract market, UX, and design signals",
+        "triggers": ["ui product", "market research", "competitive analysis"]
+      },
+      "prd-best-practices": {
+        "source": ".claude/skills/prd-best-practices/SKILL.md",
+        "phases": ["2"],
+        "description": "Apply PRD standards, templates, and acceptance rigor",
+        "triggers": ["create prd", "product requirements", "phase 2"]
+      },
+      "writing-plans": {
+        "source": ".claude/skills/writing-plans/SKILL.md",
+        "phases": ["3", "4"],
+        "description": "Create detailed implementation plans",
+        "triggers": ["have approved BRD/PRD"]
+      },
+      "executing-plans": {
+        "source": ".claude/skills/executing-plans/SKILL.md",
+        "phases": ["5"],
+        "description": "Execute plans in batches with checkpoints",
+        "triggers": ["have implementation plan"]
+      },
+      "tdd-enforcement": {
+        "source": ".claude/skills/tdd-enforcement/SKILL.md",
+        "phases": ["5"],
+        "description": "Enforce test-first development",
+        "triggers": ["implementing feature", "fixing bug"]
+      },
+      "systematic-debugging": {
+        "source": ".claude/skills/systematic-debugging/SKILL.md",
+        "phases": ["5", "6"],
+        "description": "Root cause investigation before fixes",
+        "triggers": ["bug", "test failure", "unexpected behavior"]
+      },
+      "verification-before-completion": {
+        "source": ".claude/skills/verification-before-completion/SKILL.md",
+        "phases": ["5", "6", "7"],
+        "description": "Evidence-based completion verification",
+        "triggers": ["about to claim complete", "before committing"]
+      },
+      "code-reviewer": {
+        "source": ".claude/skills/code-reviewer/SKILL.md",
+        "phases": ["5", "6"],
+        "description": "Structured code review workflow for local or PR-based changes",
+        "triggers": ["code review", "review changes", "before merge"]
+      },
+      "frontend-code-review": {
+        "source": ".claude/skills/frontend-code-review/SKILL.md",
+        "phases": ["5", "6"],
+        "description": "Frontend-specific review checklist and output format",
+        "triggers": ["tsx review", "frontend review", "react review"]
+      },
+      "fullstack-developer": {
+        "source": ".claude/skills/fullstack-developer/SKILL.md",
+        "phases": ["5"],
+        "description": "Full-stack implementation guidance across UI, API, and database",
+        "triggers": ["fullstack feature", "frontend and backend", "end-to-end implementation"]
+      },
+      "fix": {
+        "source": ".claude/skills/fix/SKILL.md",
+        "phases": ["5", "6", "7"],
+        "description": "Run formatting, lint, type, and test quality gates",
+        "triggers": ["before commit", "lint errors", "ci failure"]
+      },
+      "dispatching-parallel-agents": {
+        "source": ".claude/skills/dispatching-parallel-agents/SKILL.md",
+        "phases": ["5", "6", "7", "8"],
+        "description": "Parallel execution for independent tasks",
+        "triggers": ["2+ independent tasks", "parallel", "multiple files"]
+      },
+      "finishing-development-branch": {
+        "source": ".claude/skills/finishing-development-branch/SKILL.md",
+        "phases": ["7"],
+        "description": "Branch completion, merge/PR/cleanup",
+        "triggers": ["implementation complete", "tests pass", "ready to merge"]
+      },
+      "superpowers-integration": {
+        "source": ".claude/skills/superpowers-integration/SKILL.md",
+        "phases": ["1", "2", "3", "4", "5", "6", "7", "8"],
+        "description": "Reference mapping between framework phases and imported workflow skills",
+        "triggers": ["framework maintenance", "phase mapping", "skill governance"]
+      },
+      "toolchain-audit": {
+        "source": ".claude/skills/toolchain-audit/SKILL.md",
+        "phases": ["8"],
+        "description": "Audit consistency between skill-declared MCP dependencies and mcp.json",
+        "triggers": ["mcp consistency check", "skill dependency mismatch", "toolchain governance"]
+      }
+    },
+    "recommended": [
+      {
+        "name": "review-pr",
+        "source": "built-in",
+        "description": "Pull request code review",
+        "usage": "During Phase 5.5 code review"
+      },
+      {
+        "name": "frontend-design",
+        "source": "github:anthropics/skills",
+        "skillName": "frontend-design",
+        "description": "Frontend UI design and implementation",
+        "usage": "For UI/UX development",
+        "autoInstall": true
+      }
+    ],
+    "optional": [
+      {
+        "name": "webapp-testing",
+        "source": "github:anthropics/skills",
+        "skillName": "webapp-testing",
+        "description": "Web application testing",
+        "usage": "For frontend E2E testing",
+        "autoInstall": true
+      },
+      {
+        "name": "pdf",
+        "source": "github:anthropics/skills",
+        "skillName": "pdf",
+        "description": "PDF reading and generation",
+        "usage": "When project requires PDF documentation",
+        "autoInstall": true
+      },
+      {
+        "name": "xlsx",
+        "source": "github:anthropics/skills",
+        "skillName": "xlsx",
+        "description": "Excel spreadsheet operations",
+        "usage": "When project requires spreadsheet handling",
+        "autoInstall": true
+      },
+      {
+        "name": "docx",
+        "source": "github:anthropics/skills",
+        "skillName": "docx",
+        "description": "Word document generation",
+        "usage": "When project requires Word documentation",
+        "autoInstall": true
+      },
+      {
+        "name": "pptx",
+        "source": "github:anthropics/skills",
+        "skillName": "pptx",
+        "description": "PowerPoint presentation creation",
+        "usage": "When project requires presentations",
+        "autoInstall": true
+      },
+      {
+        "name": "mcp-builder",
+        "source": "github:anthropics/skills",
+        "skillName": "mcp-builder",
+        "description": "MCP server development",
+        "usage": "For MCP integration development",
+        "autoInstall": true
+      },
+      {
+        "name": "claude-api",
+        "source": "github:anthropics/skills",
+        "skillName": "claude-api",
+        "description": "Claude API integration",
+        "usage": "For building apps with Claude API",
+        "autoInstall": true
+      }
+    ],
+    "stitch": {
+      "description": "Google Stitch skills for UI/UX design workflow (Phase 2.5)",
+      "repository": "google-labs-code/stitch-skills",
+      "installCommand": "npx skills add google-labs-code/stitch-skills --skill {skill-name} --global",
+      "requires": ["stitch-mcp"],
+      "skills": [
+        {
+          "name": "enhance-prompt",
+          "source": "github:google-labs-code/stitch-skills",
+          "skillName": "enhance-prompt",
+          "description": "Transform vague UI ideas into polished, Stitch-optimized prompts",
+          "usage": "Before generating any Stitch design",
+          "autoInstall": true
+        },
+        {
+          "name": "stitch-loop",
+          "source": "github:google-labs-code/stitch-skills",
+          "skillName": "stitch-loop",
+          "description": "Generate complete multi-page websites from a single prompt with baton system",
+          "usage": "For page generation with Stitch",
+          "autoInstall": true
+        },
+        {
+          "name": "design-md",
+          "source": "github:google-labs-code/stitch-skills",
+          "skillName": "design-md",
+          "description": "Analyze Stitch projects and generate DESIGN.md files documenting design systems",
+          "usage": "After initial design generation",
+          "autoInstall": true
+        },
+        {
+          "name": "react-components",
+          "source": "github:google-labs-code/stitch-skills",
+          "skillName": "react:components",
+          "description": "Convert Stitch screens to React component systems with validation and design token consistency",
+          "usage": "For React component generation from designs",
+          "autoInstall": true
+        },
+        {
+          "name": "remotion",
+          "source": "github:google-labs-code/stitch-skills",
+          "skillName": "remotion",
+          "description": "Generate walkthrough videos from Stitch projects using Remotion with smooth transitions and zooming",
+          "usage": "For creating demo videos of app screens",
+          "autoInstall": true
+        },
+        {
+          "name": "shadcn-ui",
+          "source": "github:google-labs-code/stitch-skills",
+          "skillName": "shadcn-ui",
+          "description": "Expert guidance for integrating shadcn/ui components",
+          "usage": "For component specification and integration",
+          "autoInstall": true
+        }
+      ]
+    }
+  },
+  "installCommand": "claude skill install {skill-name}",
+  "checkCommand": "claude skill list"
+}

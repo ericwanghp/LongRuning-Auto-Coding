@@ -1,0 +1,125 @@
+{
+  "version": "1.0",
+  "description": "Minimal context packs for progressive disclosure by development phase",
+  "always_on_context": {
+    "purpose": "Team lead context is loaded in every phase",
+    "files": [
+      ".claude/rules/04-agent-teams.md",
+      ".claude/agents/_base/team-lead-base.md"
+    ]
+  },
+  "phases": {
+    "1": {
+      "purpose": "Requirements analysis",
+      "files": [
+        ".auto-coding/tasks.json",
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/brd/",
+        "docs/research/",
+        ".claude/rules/03-development-process.md",
+        ".claude/skills/brainstorming/SKILL.md",
+        ".claude/skills/competitive-analysis/SKILL.md"
+      ]
+    },
+    "2": {
+      "purpose": "Product design",
+      "files": [
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/brd/",
+        "docs/prd/",
+        ".claude/rules/03-development-process.md",
+        ".claude/skills/brainstorming/SKILL.md",
+        ".claude/skills/prd-best-practices/SKILL.md"
+      ]
+    },
+    "2.5": {
+      "purpose": "UI/UX design with Stitch",
+      "files": [
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/prd/",
+        ".stitch/",
+        "docs/design/",
+        ".claude/rules/03-development-process.md"
+      ]
+    },
+    "3": {
+      "purpose": "Architecture design",
+      "files": [
+        ".auto-coding/tasks.json",
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/brd/",
+        "docs/prd/",
+        "docs/architecture/",
+        ".claude/skills/writing-plans/SKILL.md"
+      ]
+    },
+    "4": {
+      "purpose": "Task breakdown",
+      "files": [
+        ".auto-coding/tasks.json",
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/architecture/",
+        "docs/plans/",
+        ".claude/skills/writing-plans/SKILL.md"
+      ]
+    },
+    "5": {
+      "purpose": "Implementation and unit or functional testing",
+      "files": [
+        ".auto-coding/tasks.json",
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/plans/",
+        "docs/design/",
+        ".claude/skills/executing-plans/SKILL.md",
+        ".claude/skills/tdd-enforcement/SKILL.md",
+        ".claude/skills/verification-before-completion/SKILL.md"
+      ]
+    },
+    "6": {
+      "purpose": "Integration and regression testing",
+      "files": [
+        ".auto-coding/tasks.json",
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/test/",
+        ".claude/rules/09-testing.md",
+        ".claude/skills/systematic-debugging/SKILL.md",
+        ".claude/skills/verification-before-completion/SKILL.md"
+      ]
+    },
+    "7": {
+      "purpose": "Deployment and UAT",
+      "files": [
+        ".auto-coding/tasks.json",
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md",
+        "docs/prd/",
+        ".claude/skills/finishing-development-branch/SKILL.md",
+        ".claude/skills/verification-before-completion/SKILL.md"
+      ]
+    },
+    "8": {
+      "purpose": "Project management and coordination",
+      "files": [
+        ".auto-coding/tasks.json",
+        ".auto-coding/progress-summary.md",
+        ".claude/rules/04-agent-teams.md",
+        ".claude/agents/_base/team-lead-base.md"
+      ]
+    }
+  }
+}

@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Auto-Coding Framework Overview</title>
+    <style>
+      :root {
+        --bg: #f5eedf;
+        --surface: rgba(255, 253, 248, 0.86);
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: rgba(100, 116, 139, 0.18);
+        --blue: #1d4ed8;
+        --teal: #0f766e;
+        --amber: #d97706;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at 82% 14%, rgba(29, 78, 216, 0.16), transparent 24rem),
+          radial-gradient(circle at 10% 84%, rgba(217, 119, 6, 0.12), transparent 22rem),
+          linear-gradient(135deg, #faf6ec 0%, #f1f6fb 100%);
+        color: var(--ink);
+        overflow: hidden;
+      }
+
+      .stage {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .frame {
+        position: absolute;
+        inset: 34px;
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.52);
+        border: 1px solid rgba(230, 222, 208, 0.92);
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+        overflow: hidden;
+      }
+
+      .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.22;
+        background-image:
+          linear-gradient(rgba(15, 23, 42, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(15, 23, 42, 0.02) 1px, transparent 1px);
+        background-size: 18px 18px;
+        pointer-events: none;
+      }
+
+      .deck {
+        position: absolute;
+        inset: 0;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 72px 84px;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 44px;
+        align-items: center;
+        opacity: 0;
+        transform: translateY(26px) scale(0.985);
+        transition: opacity 700ms ease, transform 700ms ease;
+      }
+
+      .slide.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .eyebrow {
+        font-size: 15px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--blue);
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+
+      h1,
+      h2 {
+        margin: 0 0 18px;
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.04;
+      }
+
+      h1 {
+        font-size: 74px;
+      }
+
+      h2 {
+        font-size: 56px;
+      }
+
+      p {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.52;
+        color: var(--muted);
+      }
+
+      .card-row {
+        display: flex;
+        gap: 16px;
+        margin-top: 28px;
+        flex-wrap: wrap;
+      }
+
+      .stat {
+        min-width: 168px;
+        padding: 18px 20px;
+        border-radius: 20px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 28px;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .visual {
+        position: relative;
+      }
+
+      .visual img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 28px;
+        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+      }
+
+      .note-stack {
+        display: grid;
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .note {
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(100, 116, 139, 0.14);
+        font-size: 18px;
+        color: var(--muted);
+      }
+
+      .note strong {
+        color: var(--ink);
+      }
+
+      .command-block {
+        margin-top: 30px;
+        padding: 26px 28px;
+        border-radius: 24px;
+        background: #0f172a;
+        color: #f8fafc;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 23px;
+        line-height: 1.65;
+        white-space: pre-line;
+      }
+
+      .footer {
+        position: absolute;
+        left: 84px;
+        right: 84px;
+        bottom: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .progress {
+        width: 320px;
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.24);
+        overflow: hidden;
+      }
+
+      .progress > span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--amber), var(--blue));
+        transition: width 450ms ease;
+      }
+
+      .counter {
+        font-size: 16px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+
+      .big-quote {
+        font-size: 40px;
+        line-height: 1.2;
+        font-family: Georgia, "Times New Roman", serif;
+        margin-top: 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="frame">
+        <div class="grain"></div>
+        <div class="deck">
+          <section class="slide active">
+            <div>
+              <div class="eyebrow">AI delivery system</div>
+              <h1>Build with agents like a real software team.</h1>
+              <p>
+                Auto-Coding Framework adds role clarity, process, and durable memory to long-running AI software work.
+              </p>
+              <div class="card-row">
+                <div class="stat">
+                  <strong>37</strong>
+                  <span>specialized agents</span>
+                </div>
+                <div class="stat">
+                  <strong>8</strong>
+                  <span>delivery phases</span>
+                </div>
+                <div class="stat">
+                  <strong>2</strong>
+                  <span>memory layers</span>
+                </div>
+              </div>
+            </div>
+            <div class="visual">
+              <img src="./framework-hero.svg" alt="Framework hero" />
+            </div>
+          </section>
+
+          <section class="slide">
+            <div>
+              <div class="eyebrow">Architecture</div>
+              <h2>Session coordination + durable project state.</h2>
+              <p>
+                Agent Teams handle live orchestration. Files and Git preserve the project so work can pause, resume, and stay reviewable.
+              </p>
+              <div class="note-stack">
+                <div class="note"><strong>Session layer:</strong> team lead, specialist routing, live task ownership.</div>
+                <div class="note"><strong>Project layer:</strong> tasks, progress, docs, and git-backed history.</div>
+                <div class="note"><strong>Guard rails:</strong> standardized phases, completion checklist, blocker protocol.</div>
+              </div>
+            </div>
+            <div class="visual">
+              <img src="./framework-architecture.svg" alt="Framework architecture" />
+            </div>
+          </section>
+
+          <section class="slide">
+            <div>
+              <div class="eyebrow">Usage flow</div>
+              <h2>Every project follows the same delivery spine.</h2>
+              <p>
+                Requirements, product design, Stitch UI exploration, architecture, tasking, implementation, testing, deployment, and UAT stay connected.
+              </p>
+              <div class="note-stack">
+                <div class="note"><strong>Start:</strong> bootstrap with <code>setup.sh</code> and <code>init.sh</code>.</div>
+                <div class="note"><strong>Run:</strong> tell Claude the goal and let the project-manager coordinate parallel lanes.</div>
+                <div class="note"><strong>Close:</strong> update <code>tasks.json</code>, append <code>progress.txt</code>, then commit.</div>
+              </div>
+            </div>
+            <div class="visual">
+              <img src="./framework-workflow.svg" alt="Framework workflow" />
+            </div>
+          </section>
+
+          <section class="slide">
+            <div>
+              <div class="eyebrow">Advantages</div>
+              <h2>What you gain over prompt-only workflows.</h2>
+              <p>
+                The framework turns improvisational agent work into a repeatable operating system with specialization, traceability, and recovery.
+              </p>
+              <div class="card-row">
+                <div class="stat">
+                  <strong>Resume</strong>
+                  <span>from blockers without losing context</span>
+                </div>
+                <div class="stat">
+                  <strong>Parallelize</strong>
+                  <span>multi-agent implementation cleanly</span>
+                </div>
+                <div class="stat">
+                  <strong>Audit</strong>
+                  <span>changes through docs, state, and Git</span>
+                </div>
+              </div>
+            </div>
+            <div class="visual">
+              <img src="./framework-advantages.svg" alt="Framework advantages" />
+            </div>
+          </section>
+
+          <section class="slide">
+            <div>
+              <div class="eyebrow">Start here</div>
+              <h2>Use the framework as the operating model for AI delivery.</h2>
+              <p>
+                It is a template repository, a set of rules, and a durable state machine for projects that outlive a single chat session.
+              </p>
+              <div class="command-block">./setup.sh new ../your-project
+cd ../your-project
+./init.sh
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 claude</div>
+              <div class="big-quote">Recoverable. Parallel. Reviewable. Ready for long-running work.</div>
+            </div>
+            <div class="visual">
+              <img src="./framework-video-poster.svg" alt="Framework poster" />
+            </div>
+          </section>
+        </div>
+
+        <div class="footer">
+          <div class="counter" id="counter">01 / 05</div>
+          <div class="progress"><span id="bar"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counter = document.getElementById("counter");
+      const bar = document.getElementById("bar");
+      const slideDuration = 4200;
+      const params = new URLSearchParams(window.location.search);
+      const autoplay = params.get("autoplay") === "1";
+      let index = 0;
+      let timer = null;
+
+      const showSlide = (nextIndex) => {
+        index = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle("active", slideIndex === index);
+        });
+        counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+        bar.style.width = `${((index + 1) / slides.length) * 100}%`;
+      };
+
+      const start = () => {
+        timer = window.setInterval(() => showSlide(index + 1), slideDuration);
+      };
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") {
+          showSlide(index + 1);
+        }
+        if (event.key === "ArrowLeft") {
+          showSlide(index - 1);
+        }
+      });
+
+      showSlide(0);
+      if (autoplay) {
+        start();
+      }
+    </script>
+  </body>
+</html>

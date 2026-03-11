@@ -1,0 +1,372 @@
+{
+  "version": "1.0",
+  "description": "Test Strategy Matrix - Automatically select test plan based on task type and scale",
+  "taskTypes": {
+    "frontend": {
+      "name": "Frontend Development",
+      "testPyramid": {
+        "unit": 70,
+        "integration": 20,
+        "e2e": 10
+      },
+      "testFrameworks": ["Vitest", "Playwright", "Jest"],
+      "coverage": {
+        "critical": 80,
+        "standard": 70,
+        "minimum": 60
+      },
+      "strategies": {
+        "small": {
+          "description": "Single component/page",
+          "tests": ["unit"],
+          "execution": "local",
+          "timeLimit": "30s"
+        },
+        "medium": {
+          "description": "Multi-component/page interaction",
+          "tests": ["unit", "integration"],
+          "execution": "local",
+          "timeLimit": "2m"
+        },
+        "large": {
+          "description": "Complex feature modules",
+          "tests": ["unit", "integration", "e2e"],
+          "execution": "ci",
+          "timeLimit": "5m"
+        }
+      }
+    },
+    "backend": {
+      "name": "Backend Development",
+      "testPyramid": {
+        "unit": 60,
+        "integration": 30,
+        "e2e": 10
+      },
+      "testFrameworks": ["Jest", "Supertest", "Pytest"],
+      "coverage": {
+        "critical": 85,
+        "standard": 75,
+        "minimum": 65
+      },
+      "strategies": {
+        "small": {
+          "description": "Single API/service",
+          "tests": ["unit", "contract"],
+          "execution": "local",
+          "timeLimit": "30s"
+        },
+        "medium": {
+          "description": "Multi-API/service interaction",
+          "tests": ["unit", "integration", "contract"],
+          "execution": "local",
+          "timeLimit": "2m"
+        },
+        "large": {
+          "description": "Microservice/complex business logic",
+          "tests": ["unit", "integration", "contract", "e2e"],
+          "execution": "ci",
+          "timeLimit": "10m"
+        }
+      }
+    },
+    "data-engineering": {
+      "name": "Data Engineering",
+      "testPyramid": {
+        "unit": 50,
+        "integration": 40,
+        "data-quality": 10
+      },
+      "testFrameworks": ["Pytest", "Great Expectations", "dbt"],
+      "coverage": {
+        "critical": 90,
+        "standard": 80,
+        "minimum": 70
+      },
+      "strategies": {
+        "small": {
+          "description": "Single data transformation",
+          "tests": ["unit", "data-quality"],
+          "execution": "local",
+          "timeLimit": "1m"
+        },
+        "medium": {
+          "description": "ETL pipeline",
+          "tests": ["unit", "integration", "data-quality"],
+          "execution": "scheduled",
+          "timeLimit": "5m"
+        },
+        "large": {
+          "description": "Data lake/warehouse",
+          "tests": ["unit", "integration", "data-quality", "regression"],
+          "execution": "ci",
+          "timeLimit": "30m"
+        }
+      }
+    },
+    "algorithm": {
+      "name": "Algorithm Development",
+      "testPyramid": {
+        "unit": 70,
+        "benchmark": 20,
+        "integration": 10
+      },
+      "testFrameworks": ["Pytest", "NumPy Test", "MLflow"],
+      "coverage": {
+        "critical": 90,
+        "standard": 85,
+        "minimum": 80
+      },
+      "strategies": {
+        "small": {
+          "description": "Single algorithm implementation",
+          "tests": ["unit", "benchmark"],
+          "execution": "local",
+          "timeLimit": "2m"
+        },
+        "medium": {
+          "description": "Algorithm module/optimization",
+          "tests": ["unit", "benchmark", "integration"],
+          "execution": "local",
+          "timeLimit": "10m"
+        },
+        "large": {
+          "description": "ML model/system",
+          "tests": ["unit", "benchmark", "integration", "regression"],
+          "execution": "ci",
+          "timeLimit": "1h"
+        }
+      }
+    },
+    "infrastructure": {
+      "name": "Infrastructure",
+      "testPyramid": {
+        "unit": 40,
+        "integration": 40,
+        "chaos": 20
+      },
+      "testFrameworks": ["Terratest", "Ansible-lint", "Chaos Mesh"],
+      "coverage": {
+        "critical": 80,
+        "standard": 70,
+        "minimum": 60
+      },
+      "strategies": {
+        "small": {
+          "description": "Single resource configuration",
+          "tests": ["lint", "plan-validate"],
+          "execution": "local",
+          "timeLimit": "30s"
+        },
+        "medium": {
+          "description": "Multi-resource orchestration",
+          "tests": ["lint", "plan-validate", "integration"],
+          "execution": "ci",
+          "timeLimit": "5m"
+        },
+        "large": {
+          "description": "Complete infrastructure",
+          "tests": ["lint", "plan-validate", "integration", "chaos"],
+          "execution": "ci",
+          "timeLimit": "30m"
+        }
+      }
+    }
+  },
+  "testCategories": {
+    "unit": {
+      "name": "Unit Tests",
+      "description": "Test individual functions/classes/components behavior",
+      "characteristics": ["Fast", "Independent", "Repeatable"],
+      "tools": ["Vitest", "Jest", "Pytest"],
+      "runOn": ["pre-commit", "pre-push", "ci"]
+    },
+    "integration": {
+      "name": "Integration Tests",
+      "description": "Test interaction between multiple components/modules",
+      "characteristics": ["Slower", "May need mocks", "End-to-end data flow"],
+      "tools": ["Supertest", "Playwright", "TestContainers"],
+      "runOn": ["ci", "pre-merge", "scheduled"]
+    },
+    "e2e": {
+      "name": "End-to-End Tests",
+      "description": "Complete tests simulating real user scenarios",
+      "characteristics": ["Slow", "Complete scenarios", "High fidelity"],
+      "tools": ["Playwright", "Cypress", "Puppeteer"],
+      "runOn": ["ci", "pre-merge", "release"]
+    },
+    "contract": {
+      "name": "Contract Tests",
+      "description": "Verify API interface specifications",
+      "characteristics": ["Fast", "Decoupled", "Interface validation"],
+      "tools": ["Pact", "Schemathesis", "OpenAPI Validator"],
+      "runOn": ["ci", "pre-merge"]
+    },
+    "data-quality": {
+      "name": "Data Quality Tests",
+      "description": "Verify data integrity and accuracy",
+      "characteristics": ["Data-driven", "Configurable", "Monitorable"],
+      "tools": ["Great Expectations", "dbt tests", "SQLFluff"],
+      "runOn": ["scheduled", "ci", "post-deploy"]
+    },
+    "benchmark": {
+      "name": "Performance Benchmark Tests",
+      "description": "Measure algorithm/system performance",
+      "characteristics": ["Repeatable", "Compare against baseline", "Performance metrics"],
+      "tools": ["pytest-benchmark", "k6", "Locust"],
+      "runOn": ["ci", "scheduled", "release"]
+    },
+    "chaos": {
+      "name": "Chaos Engineering",
+      "description": "Test system resilience",
+      "characteristics": ["Fault injection", "Recovery validation", "High risk"],
+      "tools": ["Chaos Mesh", "Litmus", "Gremlin"],
+      "runOn": ["staging", "scheduled"]
+    },
+    "lint": {
+      "name": "Code Linting",
+      "description": "Static analysis of code quality",
+      "characteristics": ["Fast", "No execution", "Rule-driven"],
+      "tools": ["ESLint", "Pylint", "ShellCheck"],
+      "runOn": ["pre-commit", "pre-push", "ci"]
+    },
+    "security": {
+      "name": "Security Tests",
+      "description": "Detect security vulnerabilities",
+      "characteristics": ["Comprehensive", "Automated", "Compliant"],
+      "tools": ["OWASP ZAP", "Snyk", "SonarQube"],
+      "runOn": ["ci", "scheduled", "release"]
+    }
+  },
+  "skillIntegration": {
+    "test": {
+      "description": "Run test suites",
+      "command": "npm test",
+      "options": {
+        "coverage": true,
+        "watch": false,
+        "runAll": false
+      },
+      "hooks": ["post-task"],
+      "requires": ["test-frameworks"]
+    },
+    "test:unit": {
+      "description": "Run unit tests",
+      "command": "npm run test:unit",
+      "hooks": ["pre-push", "pre-commit"]
+    },
+    "test:integration": {
+      "description": "Run integration tests",
+      "command": "npm run test:integration",
+      "hooks": ["pre-merge", "post-task"]
+    },
+    "test:e2e": {
+      "description": "Run end-to-end tests",
+      "command": "npm run test:e2e",
+      "hooks": ["pre-merge", "release"]
+    },
+    "test:coverage": {
+      "description": "Generate test coverage report",
+      "command": "npm run test:coverage",
+      "hooks": ["post-task", "ci"]
+    },
+    "test:watch": {
+      "description": "Run tests in watch mode",
+      "command": "npm run test:watch",
+      "hooks": []
+    },
+    "lint": {
+      "description": "Run code linting",
+      "command": "npm run lint",
+      "hooks": ["pre-commit", "pre-push"]
+    },
+    "lint:fix": {
+      "description": "Auto-fix code issues",
+      "command": "npm run lint:fix",
+      "hooks": ["pre-commit"]
+    },
+    "security:scan": {
+      "description": "Security vulnerability scan",
+      "command": "npm audit",
+      "hooks": ["ci", "scheduled"]
+    }
+  },
+  "hookTriggers": {
+    "pre-commit": {
+      "tests": ["lint", "unit"],
+      "timeout": "1m",
+      "failStrategy": "block"
+    },
+    "pre-push": {
+      "tests": ["lint", "unit", "integration"],
+      "timeout": "5m",
+      "failStrategy": "block"
+    },
+    "pre-merge": {
+      "tests": ["lint", "unit", "integration", "e2e", "contract"],
+      "timeout": "15m",
+      "failStrategy": "block"
+    },
+    "post-task": {
+      "tests": ["unit", "integration"],
+      "timeout": "5m",
+      "failStrategy": "warn"
+    },
+    "ci": {
+      "tests": ["lint", "unit", "integration", "e2e", "security"],
+      "timeout": "30m",
+      "failStrategy": "block"
+    },
+    "release": {
+      "tests": ["lint", "unit", "integration", "e2e", "security", "benchmark"],
+      "timeout": "1h",
+      "failStrategy": "block"
+    },
+    "scheduled": {
+      "tests": ["data-quality", "benchmark", "chaos"],
+      "timeout": "2h",
+      "failStrategy": "notify"
+    }
+  },
+  "environmentMatrix": {
+    "local": {
+      "description": "Local development environment",
+      "tests": ["unit", "lint"],
+      "database": "sqlite/memory",
+      "services": "mocked"
+    },
+    "staging": {
+      "description": "Staging environment",
+      "tests": ["integration", "e2e", "contract"],
+      "database": "staging-db",
+      "services": "real"
+    },
+    "production": {
+      "description": "Production environment",
+      "tests": ["smoke", "monitoring"],
+      "database": "production-db",
+      "services": "real"
+    }
+  },
+  "scaleThresholds": {
+    "small": {
+      "estimatedHours": "< 4",
+      "filesChanged": "< 10",
+      "testTime": "< 30s",
+      "parallelization": false
+    },
+    "medium": {
+      "estimatedHours": "4-16",
+      "filesChanged": "10-50",
+      "testTime": "< 2m",
+      "parallelization": true
+    },
+    "large": {
+      "estimatedHours": "> 16",
+      "filesChanged": "> 50",
+      "testTime": "> 2m",
+      "parallelization": true,
+      "requiresCI": true
+    }
+  }
+}

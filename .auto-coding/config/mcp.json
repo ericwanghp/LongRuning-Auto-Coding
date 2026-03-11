@@ -1,0 +1,86 @@
+{
+  "version": "1.0",
+  "description": "MCP Server Recommendations - Documents MCPs that enhance this framework",
+  "_comment": "This file is for documentation only. Run 'node .claude/scripts/check-mcp.js' to verify configuration",
+  "servers": {
+    "stitch": {
+      "enabled": true,
+      "description": "Google Stitch - AI-powered UI/UX design generation (Phase 2.5)",
+      "requiresApiKey": true,
+      "apiKeyEnv": "STITCH_API_KEY",
+      "apiKeyUrl": "https://aistudio.google.com/apikey",
+      "command": "claude mcp add stitch --transport http https://stitch.googleapis.com/mcp --header \"X-Goog-Api-Key: YOUR_API_KEY\" -s user",
+      "config": {
+        "transport": "http",
+        "url": "https://stitch.googleapis.com/mcp",
+        "header": "X-Goog-Api-Key"
+      },
+      "useCases": [
+        "Generate UI designs from prompts",
+        "Create visual prototypes",
+        "Design system generation",
+        "Component specifications"
+      ]
+    },
+    "playwright": {
+      "enabled": true,
+      "description": "Browser automation testing",
+      "command": "npx playwright",
+      "config": {
+        "headless": true,
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "testUrls": [
+          "http://localhost:3000",
+          "http://localhost:5173"
+        ]
+      },
+      "useCases": [
+        "End-to-end testing",
+        "UI interaction validation",
+        "Screenshot comparison",
+        "Performance testing"
+      ]
+    },
+    "chrome-devtools": {
+      "enabled": true,
+      "description": "Chrome DevTools debugging",
+      "command": "chrome-devtools-mcp",
+      "config": {
+        "connectionType": "websocket",
+        "defaultPort": 9222
+      },
+      "useCases": [
+        "JavaScript debugging",
+        "Network request analysis",
+        "Performance analysis",
+        "DOM inspection"
+      ]
+    },
+    "context7": {
+      "enabled": true,
+      "description": "Codebase documentation query",
+      "command": "context7",
+      "config": {
+        "indexPath": ".",
+        "excludePatterns": [
+          "node_modules/**",
+          ".git/**",
+          "dist/**"
+        ]
+      },
+      "useCases": [
+        "Codebase context query",
+        "API documentation lookup",
+        "Framework documentation retrieval"
+      ]
+    }
+  },
+  "integration": {
+    "autoStart": false,
+    "healthCheck": true,
+    "fallbackEnabled": true
+  }
+}

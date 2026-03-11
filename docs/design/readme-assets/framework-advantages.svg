@@ -1,0 +1,102 @@
+<svg width="1400" height="860" viewBox="0 0 1400 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="adv-bg" x1="180" y1="44" x2="1188" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FCF9F1"/>
+      <stop offset="1" stop-color="#F3F7FC"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1400" height="860" rx="36" fill="url(#adv-bg)"/>
+  <text x="90" y="102" fill="#0F172A" font-family="Georgia, 'Times New Roman', serif" font-size="52" font-weight="700">
+    Why It Beats Ad-hoc Prompting
+  </text>
+  <text x="92" y="148" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="24">
+    The framework adds operational discipline where raw prompting usually falls apart.
+  </text>
+
+  <rect x="92" y="214" width="1216" height="128" rx="30" fill="#0F172A"/>
+  <text x="136" y="270" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">
+    Prompt-only workflow
+  </text>
+  <text x="136" y="302" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="19">
+    <tspan x="136" dy="0">Good for isolated tasks. Fragile for long-running,</tspan>
+    <tspan x="136" dy="24">parallel, audit-sensitive delivery.</tspan>
+  </text>
+
+  <rect x="92" y="374" width="278" height="320" rx="28" fill="#FFFDF8" stroke="#E6DED0"/>
+  <text x="124" y="426" fill="#D97706" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    01
+  </text>
+  <text x="124" y="460" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">
+    <tspan x="124" dy="0">Interruption</tspan>
+    <tspan x="124" dy="30">recovery</tspan>
+  </text>
+  <text x="124" y="532" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="16">
+    <tspan x="124" dy="0">Tasks, blockers,</tspan>
+    <tspan x="124" dy="22">and next steps live</tspan>
+    <tspan x="124" dy="22">in files, not only in chat state.</tspan>
+  </text>
+  <rect x="124" y="632" width="132" height="42" rx="14" fill="#FEF3C7"/>
+  <text x="154" y="660" fill="#92400E" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    Resume fast
+  </text>
+
+  <rect x="404" y="374" width="278" height="320" rx="28" fill="#FCFDFE" stroke="#D7E2EE"/>
+  <text x="436" y="426" fill="#2563EB" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    02
+  </text>
+  <text x="436" y="460" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">
+    <tspan x="436" dy="0">Parallel</tspan>
+    <tspan x="436" dy="30">execution</tspan>
+  </text>
+  <text x="436" y="532" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="16">
+    <tspan x="436" dy="0">Team lead, role routing,</tspan>
+    <tspan x="436" dy="22">and tmux let agents</tspan>
+    <tspan x="436" dy="22">work concurrently with clarity.</tspan>
+  </text>
+  <rect x="436" y="632" width="142" height="42" rx="14" fill="#DBEAFE"/>
+  <text x="462" y="660" fill="#1D4ED8" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    Ship in lanes
+  </text>
+
+  <rect x="716" y="374" width="278" height="320" rx="28" fill="#F7FCFA" stroke="#C7E8DD"/>
+  <text x="748" y="426" fill="#0F766E" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    03
+  </text>
+  <text x="748" y="460" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">
+    <tspan x="748" dy="0">Traceable</tspan>
+    <tspan x="748" dy="30">delivery</tspan>
+  </text>
+  <text x="748" y="532" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="16">
+    <tspan x="748" dy="0">Every feature has</tspan>
+    <tspan x="748" dy="22">acceptance, history, and</tspan>
+    <tspan x="748" dy="22">a mandatory commit loop.</tspan>
+  </text>
+  <rect x="748" y="632" width="152" height="42" rx="14" fill="#D1FAE5"/>
+  <text x="776" y="660" fill="#047857" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    Audit-ready
+  </text>
+
+  <rect x="1028" y="374" width="278" height="320" rx="28" fill="#F7F5FF" stroke="#DDD6FE"/>
+  <text x="1060" y="426" fill="#7C3AED" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">
+    04
+  </text>
+  <text x="1060" y="460" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700">
+    <tspan x="1060" dy="0">Better</tspan>
+    <tspan x="1060" dy="30">specialization</tspan>
+  </text>
+  <text x="1060" y="532" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="16">
+    <tspan x="1060" dy="0">Architecture, QA, backend,</tspan>
+    <tspan x="1060" dy="22">frontend, docs, security,</tspan>
+    <tspan x="1060" dy="22">research each get a role.</tspan>
+  </text>
+  <rect x="1060" y="632" width="170" height="42" rx="14" fill="#EDE9FE"/>
+  <text x="1086" y="660" fill="#6D28D9" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">
+    Less role confusion
+  </text>
+
+  <text x="96" y="778" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="18">
+    <tspan x="96" dy="0">Outcome: the framework turns agent work into an operating system</tspan>
+    <tspan x="96" dy="24">with memory, process, and accountability.</tspan>
+  </text>
+</svg>

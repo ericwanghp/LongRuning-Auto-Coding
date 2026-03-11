@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          "node .claude/hooks/read-context.js",
+          "node .claude/hooks/prevent-skip-validation.js",
+          "node .claude/hooks/prevent-force-push.js"
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          "node .claude/hooks/verify-acceptance.js"
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          "node .claude/hooks/verify-git-commit.js"
+        ]
+      }
+    ]
+  }
+}

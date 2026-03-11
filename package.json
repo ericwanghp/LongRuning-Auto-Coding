@@ -1,0 +1,14 @@
+{
+  "name": "lrac-root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root scripts for policy and toolchain quality gates",
+  "scripts": {
+    "lint": "node .claude/scripts/policy-check.js --strict",
+    "typecheck": "npm run toolchain:audit && npm run context:check",
+    "policy:scan": "node .claude/scripts/policy-check.js --strict --sarif --sarif-output .claude/reports/policy.sarif",
+    "toolchain:audit": "node .claude/scripts/audit-toolchain-deps.js",
+    "context:check": "node .claude/scripts/verify-phase-manifest.js",
+    "verify": "npm run typecheck && npm run lint"
+  }
+}
