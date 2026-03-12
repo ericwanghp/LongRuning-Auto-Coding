@@ -1,6 +1,57 @@
 {
   "version": "3.0",
   "project": "lrac",
-  "parallelGroups": {},
-  "features": []
+  "parallelGroups": {
+    "foundation": {
+      "name": "Foundation Setup",
+      "features": [
+        "FEAT-001"
+      ],
+      "canStartWhen": [],
+      "status": "pending"
+    }
+  },
+  "features": [
+    {
+      "id": "FEAT-001",
+      "title": "Initialize project task management baseline",
+      "summary": "Create first executable feature record for dual-track task workflow.",
+      "ownerRole": "project-manager",
+      "priority": "high",
+      "taskBreakdown": {
+        "dependencies": [],
+        "parallelGroup": "foundation"
+      },
+      "acceptanceCriteria": {
+        "criteria": [
+          "Feature contains mandatory v3.0 status fields.",
+          "Dependencies and parallelGroup are explicitly defined.",
+          "Task is selectable at session start without blockers."
+        ]
+      },
+      "timeline": {
+        "createdAt": "2026-03-12T00:00:00Z",
+        "startedAt": null,
+        "completedAt": null
+      },
+      "status": {
+        "status": "pending",
+        "passes": false,
+        "blockReason": null,
+        "resumeContext": {
+          "lastStep": "Initialized tasks.json structure.",
+          "nextStep": "Select FEAT-001 and implement first tracked deliverable.",
+          "partialWork": [
+            "Parallel group scaffold created.",
+            "Acceptance criteria defined."
+          ],
+          "suggestedActions": [
+            "Update startedAt when execution begins.",
+            "Set passes true and completedAt after verification."
+          ]
+        }
+      },
+      "executionHistory": []
+    }
+  ]
 }
