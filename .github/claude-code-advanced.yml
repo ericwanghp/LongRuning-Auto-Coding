@@ -1,0 +1,398 @@
+# =============================================================================
+# Claude Code GitHub Actions Workflow - Multi-Model (MiniMax + Zhipu)
+# =============================================================================
+# Usage:
+# 1. Copy this file to your project's .github/workflows/ directory
+# 2. Add secrets in GitHub repo Settings -> Secrets and variables -> Actions:
+#    - MINIMAX_API_KEY: MiniMax API Key (Primary)
+#    - ZHIPU_API_KEY: Zhipu AI API Key (Backup)
+# 3. Add variable in Settings -> Secrets and variables -> Actions -> Variables:
+#    - DEFAULT_MODEL_PROVIDER: Model provider (minimax or zhipu, defaults to minimax)
+# =============================================================================
+
+name: Claude Code (Advanced)
+
+on:
+  push:
+    branches: [main, master, develop]
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main, master, develop]
+
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: 'Model Provider'
+        required: true
+        default: 'minimax'
+        type: choice
+        options:
+          - minimax
+          - zhipu
+
+      task_type:
+        description: 'Task Type'
+        required: true
+        default: 'review'
+        type: choice
+        options:
+          - review        # Code review
+          - refactor      # Code refactoring
+          - test          # Generate tests
+          - document      # Generate documentation
+          - security      # Security audit
+
+      auto_commit:
+        description: 'Auto commit changes'
+        required: false
+        default: false
+        type: boolean
+
+      target_files:
+        description: 'Target files (optional, comma-separated paths)'
+        required: false
+        type: string
+
+concurrency:
+  group: claude-code-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  checks: write
+
+env:
+  NODE_VERSION: '20'
+  FILE_PATTERN: '\.(js|ts|jsx|tsx|py|go|java|rb)$'
+  MAX_FILES: '30'
+
+jobs:
+  # Job 1: Setup - Configure model provider
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      base_url: ${{ steps.config.outputs.base_url }}
+      api_key_name: ${{ steps.config.outputs.api_key_name }}
+      model: ${{ steps.config.outputs.model }}
+      provider: ${{ steps.config.outputs.provider }}
+
+    steps:
+      - name: Configure model provider
+        id: config
+        run: |
+          # Default to minimax if not specified
+          PROVIDER="${{ github.event.inputs.provider || vars.DEFAULT_MODEL_PROVIDER || 'minimax' }}"
+
+          case "$PROVIDER" in
+            minimax)
+              echo "base_url=https://api.minimax.chat/v1" >> $GITHUB_OUTPUT
+              echo "api_key_name=MINIMAX_API_KEY" >> $GITHUB_OUTPUT
+              echo "model=MiniMax-M2.5" >> $GITHUB_OUTPUT
+              echo "provider=minimax" >> $GITHUB_OUTPUT
+              ;;
+            zhipu)
+              echo "base_url=https://open.bigmodel.cn/api/paas/v4" >> $GITHUB_OUTPUT
+              echo "api_key_name=ZHIPU_API_KEY" >> $GITHUB_OUTPUT
+              echo "model=glm-4-flash" >> $GITHUB_OUTPUT
+              echo "provider=zhipu" >> $GITHUB_OUTPUT
+              ;;
+            *)
+              echo "::error::Unknown provider: $PROVIDER. Supported: minimax, zhipu"
+              exit 1
+              ;;
+          esac
+
+          echo "::notice::Using model provider: $PROVIDER"
+
+  # Job 2: Analyze - Main task execution
+  analyze:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    env:
+      ANTHROPIC_BASE_URL: ${{ needs.setup.outputs.base_url }}
+
+    steps:
+      - name: Validate provider credentials
+        env:
+          MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+          ZHIPU_API_KEY: ${{ secrets.ZHIPU_API_KEY }}
+        run: |
+          PROVIDER="${{ needs.setup.outputs.provider }}"
+          if [ "$PROVIDER" = "minimax" ] && [ -z "$MINIMAX_API_KEY" ]; then
+            echo "::error::MINIMAX_API_KEY is required when provider=minimax"
+            exit 1
+          fi
+
+          if [ "$PROVIDER" = "zhipu" ] && [ -z "$ZHIPU_API_KEY" ]; then
+            echo "::error::ZHIPU_API_KEY is required when provider=zhipu"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          if [ -f "package-lock.json" ]; then
+            npm ci --ignore-scripts
+          elif [ -f "package.json" ]; then
+            npm install --ignore-scripts
+          fi
+
+      - name: Get changed files
+        id: changes
+        run: |
+          if [ -n "${{ github.event.inputs.target_files }}" ]; then
+            FILES=$(echo "${{ github.event.inputs.target_files }}" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed '/^$/d' | head -n "${{ env.MAX_FILES }}")
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}"
+            FILES=$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD | grep -E "${{ env.FILE_PATTERN }}" | head -n "${{ env.MAX_FILES }}" || true)
+          else
+            if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+              FILES=$(git diff --name-only HEAD~1 HEAD | grep -E "${{ env.FILE_PATTERN }}" | head -n "${{ env.MAX_FILES }}" || true)
+            else
+              FILES=$(git ls-files | grep -E "${{ env.FILE_PATTERN }}" | head -n "${{ env.MAX_FILES }}" || true)
+            fi
+          fi
+
+          if [ -z "$FILES" ]; then
+            echo "::warning::No relevant files found to analyze"
+            FILES="."
+          fi
+
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          echo "$FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+          echo "::notice::Analyzing files: $(echo $FILES | tr '\n' ' ')"
+
+      # Task: Code Review
+      - name: Code Review
+        if: github.event.inputs.task_type == 'review' || github.event.inputs.task_type == ''
+        id: review
+        uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets[needs.setup.outputs.api_key_name] }}
+        with:
+          anthropic_api_key: ${{ secrets[needs.setup.outputs.api_key_name] }}
+          model: ${{ needs.setup.outputs.model }}
+          prompt: |
+            ## Code Review Task
+
+            Please review the following changed files:
+            ```
+            ${{ steps.changes.outputs.files }}
+            ```
+
+            ### Review Checklist:
+            1. **Code Quality**: Readability, maintainability, coding style
+            2. **Correctness**: Logic errors, edge cases
+            3. **Performance**: Potential bottlenecks
+            4. **Security**: Vulnerabilities, sensitive data handling
+            5. **Testing**: Test coverage, missing tests
+
+            Add inline comments in the code to highlight issues and suggest improvements.
+            Provide a summary of findings at the end.
+          allowed_tools: "Read,Edit,Bash,Grep,Glob"
+          max_iterations: 20
+
+      # Task: Refactor Code
+      - name: Refactor Code
+        if: github.event.inputs.task_type == 'refactor'
+        uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets[needs.setup.outputs.api_key_name] }}
+        with:
+          anthropic_api_key: ${{ secrets[needs.setup.outputs.api_key_name] }}
+          model: ${{ needs.setup.outputs.model }}
+          prompt: |
+            ## Code Refactoring Task
+
+            Please refactor the following files to improve code quality:
+            ```
+            ${{ steps.changes.outputs.files }}
+            ```
+
+            ### Refactoring Goals:
+            1. Remove code duplication
+            2. Improve naming conventions
+            3. Simplify complex logic
+            4. Enhance readability
+            5. Follow best practices
+
+            **Important**: Preserve existing functionality. Only improve code structure.
+          allowed_tools: "Read,Edit,Bash,Grep,Glob"
+          max_iterations: 30
+
+      # Task: Generate Tests
+      - name: Generate Tests
+        if: github.event.inputs.task_type == 'test'
+        uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets[needs.setup.outputs.api_key_name] }}
+        with:
+          anthropic_api_key: ${{ secrets[needs.setup.outputs.api_key_name] }}
+          model: ${{ needs.setup.outputs.model }}
+          prompt: |
+            ## Test Generation Task
+
+            Please generate unit tests for the following files:
+            ```
+            ${{ steps.changes.outputs.files }}
+            ```
+
+            ### Test Requirements:
+            1. Use the project's existing test framework
+            2. Cover main functionality paths
+            3. Include edge case tests
+            4. Include error handling tests
+            5. Place test files in appropriate locations
+
+            Analyze the project structure first to identify the testing conventions.
+          allowed_tools: "Read,Write,Edit,Bash,Grep,Glob"
+          max_iterations: 30
+
+      # Task: Generate Documentation
+      - name: Generate Documentation
+        if: github.event.inputs.task_type == 'document'
+        uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets[needs.setup.outputs.api_key_name] }}
+        with:
+          anthropic_api_key: ${{ secrets[needs.setup.outputs.api_key_name] }}
+          model: ${{ needs.setup.outputs.model }}
+          prompt: |
+            ## Documentation Generation Task
+
+            Please generate documentation for the following code:
+            ```
+            ${{ steps.changes.outputs.files }}
+            ```
+
+            ### Documentation Requirements:
+            1. Function/method descriptions
+            2. Parameter descriptions with types
+            3. Return value descriptions
+            4. Usage examples
+            5. Edge cases and notes
+
+            Use the project's documentation style and conventions.
+          allowed_tools: "Read,Write,Edit,Bash,Grep,Glob"
+          max_iterations: 20
+
+      # Task: Security Audit
+      - name: Security Audit
+        if: github.event.inputs.task_type == 'security'
+        uses: anthropics/claude-code-action@v1
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets[needs.setup.outputs.api_key_name] }}
+        with:
+          anthropic_api_key: ${{ secrets[needs.setup.outputs.api_key_name] }}
+          model: ${{ needs.setup.outputs.model }}
+          prompt: |
+            ## Security Audit Task
+
+            Please perform a security audit on the following files:
+            ```
+            ${{ steps.changes.outputs.files }}
+            ```
+
+            ### Security Checklist:
+            1. **Injection Vulnerabilities**: SQL injection, XSS, command injection
+            2. **Authentication & Authorization**: Auth bypasses, permission issues
+            3. **Sensitive Data**: Passwords, API keys, PII handling
+            4. **Input Validation**: Parameter sanitization, boundary checks
+            5. **Dependency Security**: Known vulnerable dependencies
+
+            **Priority**: Fix critical issues immediately. Report all findings.
+          allowed_tools: "Read,Edit,Bash,Grep,Glob"
+          max_iterations: 25
+
+      # Commit changes if auto_commit is enabled
+      - name: Commit changes
+        if: github.event.inputs.auto_commit == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          if git diff --quiet; then
+            echo "::notice::No changes to commit"
+          else
+            TASK="${{ github.event.inputs.task_type || 'review' }}"
+            PROVIDER="${{ needs.setup.outputs.provider }}"
+
+            git add -A
+            git commit -m "🤖 Claude Code: $TASK (via $PROVIDER)" \
+                       -m "Co-authored-by: Claude <noreply@anthropic.com>"
+            git push
+          fi
+
+      # Create status report
+      - name: Create status report
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const taskType = '${{ github.event.inputs.task_type || 'review' }}';
+            const provider = '${{ needs.setup.outputs.provider }}';
+            const model = '${{ needs.setup.outputs.model }}';
+            const autoCommit = '${{ github.event.inputs.auto_commit }}' === 'true';
+            const jobStatus = '${{ job.status }}';
+
+            const taskLabels = {
+              'review': '🔍 Code Review',
+              'refactor': '🔧 Refactoring',
+              'test': '🧪 Test Generation',
+              'document': '📚 Documentation',
+              'security': '🔒 Security Audit'
+            };
+
+            const providerLabels = {
+              'minimax': 'MiniMax',
+              'zhipu': 'Zhipu GLM'
+            };
+
+            const report = `## 🤖 Claude Code Execution Report
+
+            | Item | Details |
+            |------|---------|
+            | Task Type | ${taskLabels[taskType] || taskType} |
+            | Provider | ${providerLabels[provider] || provider} |
+            | Model | ${model} |
+            | Auto Commit | ${autoCommit ? '✅ Yes' : '❌ No'} |
+            | Trigger | ${{ github.event_name }} |
+            | Status | ${jobStatus === 'success' ? '✅ Success' : '❌ Failed'} |
+
+            ### 📁 Analyzed Files
+            \`\`\`
+            ${{ steps.changes.outputs.files }}
+            \`\`\`
+
+            ---
+            *Executed at: ${new Date().toISOString()}*
+            `;
+
+            if ('${{ github.event_name }}' === 'pull_request') {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: report
+              });
+            }
+
+            core.summary.addRaw(report).write();
