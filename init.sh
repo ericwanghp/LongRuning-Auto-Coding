@@ -320,6 +320,64 @@ check_phase_manifest() {
     fi
 }
 
+check_agent_browser() {
+    log_info "Checking agent-browser setup..."
+
+    if ! command_exists npm; then
+        log_error "npm not installed. Please install Node.js first"
+        return 1
+    fi
+
+    if ! command_exists agent-browser; then
+        log_info "Installing agent-browser via npm..."
+        if npm install -g agent-browser; then
+            log_success "agent-browser installed"
+        else
+            log_warn "Global install failed, trying user-local npm prefix..."
+            local npm_user_prefix="$HOME/.npm-global"
+            mkdir -p "$npm_user_prefix"
+            npm config set prefix "$npm_user_prefix"
+            export PATH="$npm_user_prefix/bin:$PATH"
+            hash -r
+
+            if npm install -g agent-browser; then
+                log_success "agent-browser installed with user-local npm prefix"
+                log_warn "If needed, add this to your shell profile: export PATH=\"$npm_user_prefix/bin:\$PATH\""
+            else
+                log_error "Failed to install agent-browser"
+                return 1
+            fi
+        fi
+    fi
+
+    if ! command_exists agent-browser; then
+        log_error "agent-browser command not found after installation"
+        return 1
+    else
+        log_success "agent-browser is installed: $(agent-browser --version)"
+    fi
+
+    log_info "Installing Chromium for agent-browser..."
+    if agent-browser install; then
+        log_success "Chromium installed for agent-browser"
+    else
+        log_error "Failed to install Chromium for agent-browser"
+        return 1
+    fi
+
+    if ! command_exists npx; then
+        log_error "npx not installed. Please install Node.js first"
+        return 1
+    fi
+
+    log_info "Installing agent-browser skill..."
+    if npx skills add vercel-labs/agent-browser; then
+        log_success "agent-browser skill installed"
+    else
+        log_warn "Failed to install agent-browser skill automatically. Try: npx skills add vercel-labs/agent-browser"
+    fi
+}
+
 # Start development server
 start_dev_server() {
     log_info "Starting development server..."
@@ -410,6 +468,9 @@ check_framework_mcp
 
 # Step 5.6: Check phase context manifest
 check_phase_manifest
+
+# Step 5.7: Check and install agent-browser
+check_agent_browser
 
 # Step 6: Start development server
 if [ "$DEV_MODE" = true ]; then

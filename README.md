@@ -1,3 +1,5 @@
+**Language Switch:**[English](README.md) | [中文](README.zh.md) 
+
 # [LRAC]LongRunning-Auto-Coding Framework
 
 > The operating model for long-running AI software delivery.
