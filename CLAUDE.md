@@ -6,6 +6,11 @@
 
 **Enable AI Agents to collaborate like a human team** — through clear role division, standardized workflows, and sustainable development of complex projects.
 
+**Agent Teams TL;DR**
+- Parallelizable work uses Agent Teams first, driven by `tasks.json` dependencies and `parallelGroups`.
+- `project-manager` coordinates only; implementation stays with scoped subagents.
+- Completion authority is single-sourced in `Feature Completion Checklist` from `.claude/rules/05-session-workflow.md`.
+
 ### Core Features
 
 | Feature | Description |
@@ -55,6 +60,27 @@ All detailed rules are in `.claude/rules/` directory:
 ---
 
 ## Quick Reference
+
+### Agent Teams Core Principles ⚠️ MANDATORY
+
+1. **Use Agent Teams for executable parallel work**
+   - Start from `.auto-coding/tasks.json` (`parallelGroups` + dependencies).
+   - Single-agent serial execution is valid only for inherently sequential tasks.
+
+2. **Enforce strict team-lead boundary**
+   - `project-manager` coordinates only: breakdown, assignment, tracking, blocker resolution, and acceptance verification.
+   - `project-manager` must not write implementation code or bypass role separation.
+
+3. **Follow parallel execution protocol**
+   - Start subagents in background and isolate each in an independent tmux pane.
+   - Coordinate dependencies through task status and messages.
+
+4. **Treat subagents as temporary workers**
+   - Spawn when ready, execute scoped work, report completion/blockers, exit after approval.
+   - Never keep completed agents idle.
+
+5. **Keep completion authority single-sourced**
+   - Feature completion steps are defined only in `.claude/rules/05-session-workflow.md` under `Feature Completion Checklist`.
 
 ### Feature Completion Checklist ⚠️ MANDATORY
 
