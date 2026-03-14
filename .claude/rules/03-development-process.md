@@ -23,7 +23,7 @@ Phase 8: Project Management as team-lead (Throughout)
 | Phase | Required Skill | When to Invoke | How |
 |-------|---------------|----------------|-----|
 | **1-2** | `brainstorming` | When receiving new feature request | `Skill("brainstorming")` |
-| **2.5** | `enhance-prompt` → `stitch-loop` → `design-md` → `shadcn-ui` | When creating UI/UX design | Invoke skills in sequence |
+| **2.5** | `frontend-design` → `enhance-prompt` → `stitch-loop` → `design-md` → `shadcn-ui` | When creating UI/UX design | Run style/theme brainstorming first, then invoke Stitch skills in sequence |
 | **3-4** | `writing-plans` | When BRD/PRD approved, creating architecture | `Skill("writing-plans")` |
 | **5** | `executing-plans` | When starting implementation | `Skill("executing-plans")` |
 | **5** | `tdd-enforcement` | Before writing ANY production code | `Skill("tdd-enforcement")` |
@@ -77,7 +77,7 @@ Use this matrix to remove dispatch ambiguity between agents and skills.
 |-------|----------------|----------------|----------------|
 | 1 | `business-analyst` + `market-researcher` | `brainstorming` | `competitive-analysis` |
 | 2 | `product-manager` + `ux-designer` | `brainstorming` | `competitive-analysis` |
-| 2.5 | `ux-designer` + `frontend-dev` | `enhance-prompt` → `stitch-loop` → `design-md` | `shadcn-ui` |
+| 2.5 | `ux-designer` + `frontend-dev` | `frontend-design` → `enhance-prompt` → `stitch-loop` → `design-md` | `shadcn-ui` |
 | 3 | `architect` + `researcher` + `architect-reviewer` | `writing-plans` | None |
 | 4 | `architect` | `writing-plans` | None |
 | 5 | `fullstack-dev` + `code-reviewer` | `executing-plans` + `tdd-enforcement` + `verification-before-completion` | `systematic-debugging` + `fix` + `dispatching-parallel-agents` |
@@ -128,10 +128,11 @@ To reduce context bloat, phase execution should follow progressive disclosure:
 **Required Skills** (Google Official stitch-skills from https://github.com/google-labs-code/stitch-skills):
 
 Invoke skills in sequence:
-1. `Skill("enhance-prompt")` — Transform vague UI ideas into Stitch-optimized prompts
-2. `Skill("stitch-loop")` — Generate UI designs using Stitch MCP
-3. `Skill("design-md")` — Document design system in DESIGN.md
-4. `Skill("shadcn-ui")` — Map designs to shadcn/ui components (optional)
+1. `Skill("frontend-design")` — Run multi-round user Q&A brainstorming to lock design style and theme
+2. `Skill("enhance-prompt")` — Transform approved style/theme into Stitch-optimized prompts
+3. `Skill("stitch-loop")` — Generate UI designs using Stitch MCP
+4. `Skill("design-md")` — Document design system in DESIGN.md
+5. `Skill("shadcn-ui")` — Map designs to shadcn/ui components (optional)
 
 **Prerequisites**:
 - Stitch MCP server must be configured in `~/.claude.json`:
@@ -162,10 +163,17 @@ Invoke skills in sequence:
 │                     Phase 2.5: Stitch UI/UX Design Workflow                │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                             │
+│  Step 0: Style/Theme Brainstorming (frontend-design skill)                 │
+│  ─────────────────────────────────────────────────                          │
+│  - Invoke: Skill("frontend-design")                                        │
+│  - Conduct multi-round Q&A with user to confirm visual style and theme     │
+│  - Lock direction before any Stitch generation                             │
+│  - Record agreed style/theme in PRD or design notes                        │
+│                                                                             │
 │  Step 1: Enhance UI Prompts (enhance-prompt skill)                         │
 │  ─────────────────────────────────────────────────                          │
 │  - Invoke: Skill("enhance-prompt")                                         │
-│  - Transform vague UI ideas into polished, Stitch-optimized prompts        │
+│  - Transform confirmed style/theme into polished Stitch-optimized prompts   │
 │  - Add UI/UX keywords, structure, and design system context                │
 │  - Output: `.stitch/next-prompt.md` with enhanced prompt                   │
 │                                                                             │
@@ -209,10 +217,56 @@ Invoke skills in sequence:
 
 | Skill | Purpose | When to Use | Install Command |
 |-------|---------|-------------|-----------------|
+| `frontend-design` | Brainstorm and converge on design style/theme with user | Before any Stitch prompt generation | Built-in skill |
 | `enhance-prompt` | Transform vague UI ideas into Stitch-optimized prompts | Before generating any design | `npx skills add google-labs-code/stitch-skills --skill enhance-prompt --global` |
 | `stitch-loop` | Iteratively build multi-page websites with baton system | For page generation | `npx skills add google-labs-code/stitch-skills --skill stitch-loop --global` |
 | `design-md` | Create DESIGN.md documenting design system | After initial design generation | `npx skills add google-labs-code/stitch-skills --skill design-md --global` |
 | `shadcn-ui` | Map designs to shadcn/ui components | For component specification | `npx skills add google-labs-code/stitch-skills --skill shadcn-ui --global` |
+
+#### CLI Theme Feedback Protocol (Phase 2.5 Step 0)
+
+When collecting style/theme feedback in CLI, use this mandatory structure:
+
+1. Present 2-3 candidate themes with explicit color tokens:
+   - `Primary`, `Secondary`, `Accent`, `Background`, `Surface`, `Text`
+   - Include HEX for each token and one-line usage intent
+2. Attach visual artifacts for each candidate:
+   - At least one screenshot path from `.stitch/designs/*.png`
+   - If available, include preview URL or generated HTML path
+3. Ask structured questions instead of open-ended "looks good?":
+   - Brand match score (1-5)
+   - Readability score (1-5)
+   - Emotional tone fit (1-5)
+   - One required change request
+4. Confirm final decision as one of:
+   - `Option A`, `Option B`, `Hybrid (A+B)`, or `New direction`
+5. Persist the confirmed decision before Step 1:
+   - Write final theme tokens and rationale into PRD or design notes
+   - Use the confirmed decision as input for `enhance-prompt`
+
+CLI feedback prompt template:
+
+```text
+Theme Candidate A
+- Primary: #XXXXXX (buttons, links)
+- Secondary: #XXXXXX (cards, sections)
+- Accent: #XXXXXX (highlights, states)
+- Background: #XXXXXX (page background)
+- Surface: #XXXXXX (panel/card background)
+- Text: #XXXXXX (primary copy)
+- Preview: .stitch/designs/<page-a>.png
+
+Theme Candidate B
+- Primary: #XXXXXX ...
+- Preview: .stitch/designs/<page-b>.png
+
+Please reply with:
+1) Selection: A / B / Hybrid / New
+2) Brand match (1-5):
+3) Readability (1-5):
+4) Tone fit (1-5):
+5) One specific change:
+```
 
 #### File Structure for Stitch Projects
 

@@ -111,15 +111,16 @@ Team-lead coordination context is always-on from Phase 1 to Phase 8 via `.claude
 
 ### Stitch Design Workflow (Phase 2.5)
 
-**Required Skills**: `enhance-prompt` → `stitch-loop` → `design-md` → `shadcn-ui`
+**Required Skills**: `frontend-design` → `enhance-prompt` → `stitch-loop` → `design-md` → `shadcn-ui`
 
 | Step | Skill | Output |
 |------|-------|--------|
-| 1. Enhance Prompt | `enhance-prompt` | `.stitch/next-prompt.md` |
-| 2. Generate Design | `stitch-loop` | `.stitch/designs/{page}.html` + `.png` |
-| 3. Document System | `design-md` | `.stitch/DESIGN.md` |
-| 4. Iterate Pages | `stitch-loop` | Additional pages via baton |
-| 5. Component Spec | `shadcn-ui` | `docs/design/UI-SPEC-*.md` |
+| 1. Brainstorm Style & Theme | `frontend-design` | Confirmed direction via multi-round user Q&A |
+| 2. Enhance Prompt | `enhance-prompt` | `.stitch/next-prompt.md` |
+| 3. Generate Design | `stitch-loop` | `.stitch/designs/{page}.html` + `.png` |
+| 4. Document System | `design-md` | `.stitch/DESIGN.md` |
+| 5. Iterate Pages | `stitch-loop` | Additional pages via baton |
+| 6. Component Spec | `shadcn-ui` | `docs/design/UI-SPEC-*.md` |
 
 ### File Locations
 
